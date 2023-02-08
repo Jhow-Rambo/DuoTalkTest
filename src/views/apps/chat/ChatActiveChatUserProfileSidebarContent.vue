@@ -23,7 +23,7 @@ let valueTag = ''
 
 const addNewTag = () => {
   (nameTag && valueTag) && tags.push({ id: tags.length, name: nameTag, value: valueTag })
-  console.log(tags)
+
   nameTag = ''
   valueTag = ''
 }
