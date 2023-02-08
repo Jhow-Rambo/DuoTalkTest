@@ -11,6 +11,26 @@ const emit = defineEmits<{
 const store = useChatStore()
 
 const { resolveAvatarBadgeVariant } = useChat()
+
+// eslint-disable-next-line prefer-const
+let tags: { id: number; name: string; value: string }[] = [
+  { id: 0, name: 'Lorem Ipsum', value: 'Lorem Ipsum' },
+]
+
+let nameTag = ''
+
+let valueTag = ''
+
+const addNewTag = () => {
+  (nameTag && valueTag) && tags.push({ id: tags.length, name: nameTag, value: valueTag })
+  console.log(tags)
+  nameTag = ''
+  valueTag = ''
+}
+
+const deleteTag = (id: number) => {
+  tags.splice(id, 1)
+}
 </script>
 
 <template>
@@ -85,77 +105,54 @@ const { resolveAvatarBadgeVariant } = useChat()
         </p>
       </div>
 
-      <!-- Personal Information -->
-      <div class="mb-8">
-        <span class="d-block text-sm text-disabled mb-3">PERSONAL INFORMATION</span>
-        <div class="d-flex align-center">
-          <VIcon
-            class="me-2"
-            icon="tabler-mail"
-            size="22"
-          />
-          <span>lucifer@email.com</span>
-        </div>
-        <div class="d-flex align-center my-3">
-          <VIcon
-            class="me-2"
-            icon="tabler-phone"
-            size="22"
-          />
-          <span>+1(123) 456 - 7890</span>
-        </div>
-        <div class="d-flex align-center">
-          <VIcon
-            class="me-2"
-            icon="tabler-clock"
-            size="22"
-          />
-          <span>Mon - Fri 10AM - 8PM</span>
+      <!-- TAGS -->
+      <div class="mt-8">
+        <span
+          for="textarea-user-about"
+          class="text-sm text-disabled"
+        >TAGS</span>
+        <!-- TODO: Add tags -->
+        <div
+          v-for="tag in tags"
+          :key="tag.id"
+        >
+          <div class="d-flex ">
+            <p class="px-2">
+              {{ tag.name }}:
+            </p>
+            <p>{{ tag.value }}</p>
+            <p
+              class="px-1"
+              @click="deleteTag(tag.id)"
+            >
+              x
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Options -->
-      <div>
-        <span class="d-block text-sm text-disabled mb-3">OPTIONS</span>
-        <div class="d-flex align-center">
-          <VIcon
-            class="me-2"
-            icon="tabler-bookmark"
-            size="22"
+      <!-- Add Tags -->
+      <div class="mb-8">
+        <span
+          for="textarea-user-about"
+          class="text-sm text-disabled"
+        >Adicionar Tag</span>
+        <div class="d-flex">
+          <VTextField
+            v-model="nameTag"
+            :maxlength="20"
+            label="Nome"
+            autofocus
           />
-          <span>Add Tag</span>
-        </div>
-        <div class="d-flex align-center my-3">
-          <VIcon
-            class="me-2"
-            icon="tabler-star"
-            size="22"
+          <VTextField
+            v-model="valueTag"
+            :maxlength="20"
+            autofocus
+            label="Valor"
           />
-          <span>Important Contact</span>
-        </div>
-        <div class="d-flex align-center mb-3">
-          <VIcon
-            class="me-2"
-            icon="tabler-photo"
-            size="22"
-          />
-          <span>Shared Media</span>
-        </div>
-        <div class="d-flex align-center mb-3">
-          <VIcon
-            class="me-2"
-            icon="tabler-trash"
-            size="22"
-          />
-          <span>Delete Contact</span>
-        </div>
-        <div class="d-flex align-center">
-          <VIcon
-            class="me-2 ms-1"
-            size="18"
-            icon="tabler-ban"
-          />
-          <span>Block Contact</span>
+          <VBtn @click="addNewTag">
+            +
+          </VBtn>
         </div>
       </div>
     </PerfectScrollbar>
